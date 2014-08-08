@@ -53,7 +53,7 @@ namespace NuGetCalc
                 }
                 catch
                 {
-                    Console.WriteLine("Couldn't download the package.");
+                    Console.WriteLine("Couldn't download the package");
                     return;
                 }
             }
@@ -98,13 +98,20 @@ namespace NuGetCalc
             }
             else
             {
-                Console.WriteLine("No compatible assembly.");
+                Console.WriteLine("No compatible assembly");
             }
         }
 
         static void ShowHelp()
         {
+            Console.WriteLine("NuGetCalc " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            Console.WriteLine(@"
+Usage: NuGetCalc [-v] PackageName TargetFramework
+  PackageName: The package name to download or the file path that ends with "".nupkg""
+  TargetFramework: The framework name you want to check
+  -v: If -v, it will show you the calculated score inside NuGet
 
+Example: NuGetCalc CoreTweet win8");
         }
 
         private static Func<FrameworkName, FrameworkName, long> getProfileCompatibilityCache;
