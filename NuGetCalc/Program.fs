@@ -5,6 +5,8 @@
 //
 // See http://www.wtfpl.net/
 
+module NuGetCalc
+
 open System
 open System.IO
 open System.Linq.Expressions
@@ -13,10 +15,19 @@ open System.Reflection
 open System.Runtime.Versioning
 open NuGet
 
+[<assembly: AssemblyTitle("NuGetCalc")>]
+[<assembly: AssemblyDescription("Tool to find which assembly NuGet adds to your project")>]
+[<assembly: AssemblyProduct("NuGetCalc")>]
+[<assembly: AssemblyCopyright("Copyright © 2014 azyobuzin")>]
+[<assembly: AssemblyVersion("1.1.0.0")>]
+[<assembly: AssemblyFileVersion("1.1.0.0")>]
+()
+
 exception ArgumentError
 
 let printHelp() =
-    printfn @"NuGetCalc
+    printfn
+        @"NuGetCalc %s
 
 Usage: NuGetCalc [-v] PackageName TargetFramework
   PackageName: The package name to download or the file path that ends with "".nupkg""
@@ -24,19 +35,19 @@ Usage: NuGetCalc [-v] PackageName TargetFramework
   -v: If -v, it will show you the calculated score inside NuGet
 
 Example: NuGetCalc CoreTweet win8"
+        (Assembly.GetExecutingAssembly().GetName().Version.ToString())
 
 let getProfileCompatibility =
-    match (Expression.Parameter typeof<FrameworkName>, Expression.Parameter typeof<FrameworkName>) with
-        | (arg0, arg1) ->
-            Expression.Lambda<Func<FrameworkName, FrameworkName, int64>>(
-                Expression.Call(
-                    typeof<VersionUtility>.GetMethod("GetProfileCompatibility", BindingFlags.NonPublic ||| BindingFlags.Static),
-                    arg0,
-                    arg1,
-                    Expression.Constant NetPortableProfileTable.Default
-                ),
-                arg0, arg1
-            ).Compile()
+    let arg0 = Expression.Parameter(typeof<FrameworkName>)
+    let arg1 = Expression.Parameter(typeof<FrameworkName>)
+    Expression.Lambda<Func<FrameworkName, FrameworkName, int64>>(
+        Expression.Call(
+            typeof<VersionUtility>.GetMethod("GetProfileCompatibility", BindingFlags.NonPublic ||| BindingFlags.Static),
+            arg0,
+            arg1,
+            Expression.Constant NetPortableProfileTable.Default
+        ),
+        arg0, arg1).Compile()
 
 let core argv =
     let len = argv |> Array.length
@@ -67,14 +78,11 @@ let core argv =
             if verbose then
                 assemblies
                     |> Seq.map (fun item ->
-                        (
-                            item,
-                            match item.SupportedFrameworks with
-                                | f when f = null || (f |> Seq.isEmpty) -> [| null |] :> seq<FrameworkName>
-                                | f -> f))
-                    |> Seq.collect (fun (item, frameworks) -> frameworks |> Seq.map (fun f -> (item, f)))
-                    |> Seq.groupBy (fun (item, f) -> f)
-                    |> Seq.map (fun (key, values) -> key)
+                        match item.SupportedFrameworks with
+                            | null -> Seq.empty
+                            | f -> f)
+                    |> Seq.collect (fun f -> f)
+                    |> Seq.distinct
                     |> Seq.filter (fun f -> f <> null && VersionUtility.IsCompatible(target, [| f |]))
                     |> Seq.map (fun f -> (f, getProfileCompatibility.Invoke(target, f)))
                     |> Seq.sortBy (fun (f, c) -> -c)
