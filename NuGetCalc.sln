@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetCalc", "NuGetCalc\NuGetCalc.csproj", "{3F0A1E8A-B54D-4689-9964-11B89F6B1884}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{C245B016-2D45-401E-8EBC-3DB4B9771FFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "NuGet\src\Core\Core.csproj", "{F879F274-EFA0-4157-8404-33A19B4E6AEC}"
@@ -18,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{36DD97
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NuGetCalc", "NuGetCalc\NuGetCalc.fsproj", "{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Coverage|Any CPU = Coverage|Any CPU
@@ -27,16 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Coverage|Any CPU.ActiveCfg = Release|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Coverage|Any CPU.Build.0 = Release|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Mono Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Mono Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Mono Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Mono Release|Any CPU.Build.0 = Release|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F0A1E8A-B54D-4689-9964-11B89F6B1884}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Coverage|Any CPU.ActiveCfg = Coverage|Any CPU
 		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Coverage|Any CPU.Build.0 = Coverage|Any CPU
 		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -57,6 +47,16 @@ Global
 		{211C558C-1712-44E9-A959-FE2D2AA1DE34}.Mono Release|Any CPU.Build.0 = Mono Release|Any CPU
 		{211C558C-1712-44E9-A959-FE2D2AA1DE34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{211C558C-1712-44E9-A959-FE2D2AA1DE34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Coverage|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Coverage|Any CPU.Build.0 = Release|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Mono Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Mono Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Mono Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Mono Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9A5626-2F33-4C52-A859-3BC69AD33C5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
