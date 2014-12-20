@@ -44,8 +44,7 @@ let getProfileCompatibility =
         Expression.Call(
             typeof<VersionUtility>.GetMethod("GetProfileCompatibility", BindingFlags.NonPublic ||| BindingFlags.Static),
             arg0,
-            arg1,
-            Expression.Constant NetPortableProfileTable.Default
+            arg1
         ),
         arg0, arg1).Compile()
 
