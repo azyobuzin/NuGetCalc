@@ -19,8 +19,8 @@ open NuGet
 [<assembly: AssemblyDescription("Tool to find which assembly NuGet adds to your project")>]
 [<assembly: AssemblyProduct("NuGetCalc")>]
 [<assembly: AssemblyCopyright("Copyright © 2014 azyobuzin")>]
-[<assembly: AssemblyVersion("1.1.0.0")>]
-[<assembly: AssemblyFileVersion("1.1.0.0")>]
+[<assembly: AssemblyVersion("1.2.0.0")>]
+[<assembly: AssemblyFileVersion("1.2.0.0")>]
 ()
 
 exception ArgumentError
@@ -71,7 +71,8 @@ let core argv =
             | _ -> raise ArgumentError
 
     try
-        let assemblies = (new ZipPackage(packageFile)).AssemblyReferences
+        let package = new ZipPackage(packageFile)
+        let assemblies = package.AssemblyReferences
         let (b, result) = VersionUtility.TryGetCompatibleItems(target, assemblies)
         if b then
             if verbose then
@@ -91,6 +92,11 @@ let core argv =
             else
                 for f in (result |> Seq.head).SupportedFrameworks do
                     printfn "%s" (f.ToString())
+                    let dependencies = package.GetCompatiblePackageDependencies(f)
+                    if not (dependencies |> Seq.isEmpty) then
+                        printfn "Dependencies:"
+                        for d in dependencies do
+                            printfn "  %O" d
         else
             printfn "No compatible assembly"
     finally
