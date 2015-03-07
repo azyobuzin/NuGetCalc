@@ -1,4 +1,7 @@
-﻿function Get-Nupkg($Path, $Source, $Version)
+﻿dir (Join-Path (Split-Path (& { $MyInvocation.ScriptName }) -Parent) "lib\*.dll") |
+    foreach { [Reflection.Assembly]::LoadFrom($_.FullName) }
+
+function Get-Nupkg($Path, $Source, $Version)
 {
     if ($Path -is [NuGet.Packaging.PackageReaderBase]) { return $Path }
     if ($Path -is [IO.FileInfo]) { $Path = $Path.FullName }
@@ -13,7 +16,7 @@
         if ($Source -eq $null) { $Source = "https://api.nuget.org/v3/index.json" }
 
         $catalog = New-Object ComponentModel.Composition.Hosting.AggregateCatalog(New-Object ComponentModel.Composition.Hosting.DirectoryCatalog(
-            (Join-Path (Split-Path $MyInvocation.ScriptName -Parent) "packages\NuGet.Protocol.V2V3\lib\net45"), "NuGet.*.dll"))
+            (Join-Path (Split-Path $MyInvocation.ScriptName -Parent) lib), "NuGet.*.dll"))
         try
         {
             $containerType = [ComponentModel.Composition.Hosting.CompositionContainer]
@@ -39,10 +42,11 @@
             $nugetVersion = New-Object NuGet.Versioning.NuGetVersion($Version)
         }
         $dlres = [NuGet.Client.SourceRepository].GetMethod("GetResource", [Type[]]@()).MakeGenericMethod([NuGet.Client.DownloadResource]).Invoke($repo, @())
-        $dlurl = $dlres.GetDownloadUrl((New-Object NuGet.PackagingCore.PackageIdentity($Path, $nugetVersion))).Result
-        Write-Host "Downloading: $dlurl"
-        $response = Invoke-WebRequest $dlurl
-        New-Object NuGet.Packaging.PackageReader($response.RawContentStream)
+        $resStream = $dlres.GetStream((New-Object NuGet.PackagingCore.PackageIdentity($Path, $nugetVersion)), [Threading.CancellationToken]::None).Result
+        $memStream = New-Object IO.MemoryStream
+        $resStream.CopyTo($memStream)
+        $resStream.Close()
+        New-Object NuGet.Packaging.PackageReader($memStream)
     }
 }
 
