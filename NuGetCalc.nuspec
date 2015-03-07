@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NuGetCalc</id>
+    <version>$version$</version>
+    <authors>azyobuzin</authors>
+    <owners>azyobuzin</owners>
+    <licenseUrl>https://github.com/azyobuzin/NuGetCalc/blob/26f96bcb60988d1eee60a7171afb92702b76379f/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/azyobuzin/NuGetCalc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>PS functions to find dependency information of nupkgs</description>
+    <copyright>Copyright 2014-2015 azyobuzin</copyright>
+    <tags>NuGet</tags>
+  </metadata>
+  @files@
+</package>
