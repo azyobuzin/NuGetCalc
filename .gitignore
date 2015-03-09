@@ -120,7 +120,6 @@ ClientBin/
 *.[Pp]ublish.xml
 *.pfx
 *.publishsettings
-/lib/
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -158,3 +157,7 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+
+/NuGetCalc/lib/
+*.zip
