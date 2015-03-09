@@ -50,16 +50,21 @@ function Get-Nupkg($Path, $Source, $Version)
     }
 }
 
-function Find-MostCompatibleGroup($Groups, $TargetFramework)
+function Find-MostCompatibleGroup([Object[]]$Groups, $TargetFramework)
 {
     $reducer = New-Object NuGet.Frameworks.FrameworkReducer
-    $f = $reducer.GetNearest(
-        [NuGet.Frameworks.NuGetFramework]::Parse($TargetFramework),
-        [NuGet.Frameworks.NuGetFramework[]]($groups | foreach TargetFramework))
-    if ($f -ne $null)
+    [NuGet.Frameworks.NuGetFramework[]]$possibleFrameworks = $Groups | foreach TargetFramework
+    if ($null -ne $possibleFrameworks)
     {
-        $groups | where { $_.TargetFramework.Equals($f) } | select -Index 0
+        $f = $reducer.GetNearest(
+            [NuGet.Frameworks.NuGetFramework]::Parse($TargetFramework),
+            $possibleFrameworks)
+        if ($f -ne $null)
+        {
+            return $Groups | where { $_.TargetFramework.Equals($f) } | select -Index 0
+        }
     }
+    $Groups | where { $_.TargetFramework -eq $null } | select -Index 0
 }
 
 function Get-ReferenceGroups
@@ -133,7 +138,10 @@ function Find-MostCompatibleDependencyGroup
     )
 
     $groups = Get-DependencyGroups $Path -Source $Source -Version $Version
-    Find-MostCompatibleGroup $groups $TargetFramework
+    if ($groups -ne $null)
+    {
+        Find-MostCompatibleGroup $groups $TargetFramework
+    }
 }
 
 Export-ModuleMember -Function 'Get-ReferenceGroups', 'Find-MostCompatibleReferenceGroup', 'Get-DependencyGroups', 'Find-MostCompatibleDependencyGroup'
